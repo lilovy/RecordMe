@@ -7,9 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.android.material.textfield.TextInputEditText
+import com.lilovy.recordme.databinding.BottomSheetBinding
 import java.io.File
 
 
@@ -19,6 +18,9 @@ class BottomSheet: BottomSheetDialogFragment {
         fun onCancelClicked()
         fun onOkClicked(filePath: String, filename: String)
     }
+
+
+    private lateinit var binding: BottomSheetBinding
 
     private var listener: OnClickListener
 
@@ -35,25 +37,22 @@ class BottomSheet: BottomSheetDialogFragment {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        var view = inflater.inflate(R.layout.bottom_sheet, container)
-        var editText = view.findViewById<TextInputEditText>(R.id.filenameInput)
+    ): View {
+        binding = BottomSheetBinding.inflate(layoutInflater)
 
+        inflater.inflate(R.layout.bottom_sheet, container)
+        val editText = binding.filenameInput
 
         dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-
 
         filename = filename.split(".mp3")[0]
         editText.setText(filename)
 
         showKeyboard(editText)
 
-        // deal with OK button
-        view.findViewById<Button>(R.id.okBtn).setOnClickListener {
-            // hide keyboard
-            hideKeyboard(view)
+        binding.okBtn.setOnClickListener {
+            hideKeyboard(binding.root)
 
-            // update filename if need
             val updatedFilename = editText.text.toString()
             if(updatedFilename != filename){
                 val newFile = File("$dirPath$updatedFilename.mp3")
@@ -65,8 +64,8 @@ class BottomSheet: BottomSheetDialogFragment {
             listener.onOkClicked("$dirPath$updatedFilename.mp3", updatedFilename)
         }
 
-        view.findViewById<Button>(R.id.cancelBtn).setOnClickListener {
-            hideKeyboard(view)
+        binding.cancelBtn.setOnClickListener {
+            hideKeyboard(binding.root)
             File(dirPath+filename).delete()
 
             dismiss()
@@ -74,7 +73,7 @@ class BottomSheet: BottomSheetDialogFragment {
             listener.onCancelClicked()
         }
 
-        return view
+        return binding.root
 
     }
 
