@@ -5,4 +5,6 @@
     <string name="_12">12</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="transcribed_text"></string>
+    <string name="transcribe">Расшифровать</string>
 </resources>
