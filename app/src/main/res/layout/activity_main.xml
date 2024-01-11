@@ -25,7 +25,7 @@
         <com.lilovy.recordme.RecorderWaveformView
             android:id="@+id/playerView"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="170dp"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
