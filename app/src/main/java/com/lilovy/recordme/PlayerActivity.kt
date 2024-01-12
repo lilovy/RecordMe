@@ -36,7 +36,7 @@ class PlayerActivity : AppCompatActivity() {
         val tvFilename = binding.tvFilename
         val seekBar = binding.seekBar
         val btnPlay = binding.btnPlay
-        val btnTranscribe = binding.btnTranscibe
+//        val btnTranscribe = binding.btnTranscibe
         val transcrb_txt = binding.transcrbTxt
 
         setSupportActionBar(toolbar)
