@@ -10,15 +10,19 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.View
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.room.Room
+import com.lilovy.recordme.api.Transcribe
 import com.lilovy.recordme.databinding.ActivityMainBinding
 import com.lilovy.recordme.db.AppDatabase
 import com.lilovy.recordme.db.AudioRecord
 import com.lilovy.recordme.tools.Timer
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.IOException
 import java.lang.Exception
@@ -38,6 +42,8 @@ class MainActivity : AppCompatActivity(), BottomSheet.OnClickListener, Timer.OnT
     private var refreshRate : Long = 60
     private lateinit var timer: Timer
     private lateinit var handler: Handler
+
+    private lateinit var content: String
 
     private lateinit var binding: ActivityMainBinding
 
@@ -203,6 +209,9 @@ class MainActivity : AppCompatActivity(), BottomSheet.OnClickListener, Timer.OnT
     }
 
     override fun onOkClicked(filePath: String, filename: String) {
+
+        binding.progressBar.visibility = ProgressBar.VISIBLE
+
         val db = Room.databaseBuilder(
             this,
             AppDatabase::class.java,
@@ -212,7 +221,15 @@ class MainActivity : AppCompatActivity(), BottomSheet.OnClickListener, Timer.OnT
         stopRecording()
 
         GlobalScope.launch {
-            db.audioRecordDAO().insert(AudioRecord(filename, filePath, Date().time, duration))
+            content = withContext(Dispatchers.IO) {
+                Transcribe().getTranscribe(filePath).toString()
+            }
+
+            withContext(Dispatchers.Main) {
+                binding.progressBar.visibility = ProgressBar.GONE
+            }
+
+            db.audioRecordDAO().insert(AudioRecord(filename, filePath, Date().time, duration, content))
         }
 
     }

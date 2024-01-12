@@ -145,6 +145,7 @@ class ListingActivity : AppCompatActivity(), Adapter.OnItemClickListener {
         }else{
             intent.putExtra("filepath", audioRecord.filePath)
             intent.putExtra("filename", audioRecord.filename)
+            intent.putExtra("transcript", audioRecord.transcript)
             startActivity(intent)
         }
 

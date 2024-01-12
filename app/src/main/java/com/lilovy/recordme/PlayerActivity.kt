@@ -48,8 +48,10 @@ class PlayerActivity : AppCompatActivity() {
 
         val filePath = intent.getStringExtra("filepath")
         val filename = intent.getStringExtra("filename")
+        val transcript = intent.getStringExtra("transcript")
 
         tvFilename.text = filename
+        transcrb_txt.text = transcript
 
         mediaPlayer = MediaPlayer()
         mediaPlayer.apply {
@@ -69,20 +71,20 @@ class PlayerActivity : AppCompatActivity() {
             playPausePlayer()
         }
 
-        btnTranscribe.setOnClickListener {
-            binding.progressBar.visibility = ProgressBar.VISIBLE
-
-            GlobalScope.launch {
-                content = withContext(Dispatchers.IO) {
-                        Transcribe().getTranscribe(filePath).toString()
-                }
-                withContext(Dispatchers.Main) {
-                    binding.progressBar.visibility = ProgressBar.GONE
-                    transcrb_txt.text = content
-                }
-            }
-
-        }
+//        btnTranscribe.setOnClickListener {
+//            binding.progressBar.visibility = ProgressBar.VISIBLE
+//
+//            GlobalScope.launch {
+//                content = withContext(Dispatchers.IO) {
+//                        Transcribe().getTranscribe(filePath).toString()
+//                }
+//                withContext(Dispatchers.Main) {
+//                    binding.progressBar.visibility = ProgressBar.GONE
+//                    transcrb_txt.text = content
+//                }
+//            }
+//
+//        }
 
 
         seekBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
