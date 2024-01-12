@@ -35,6 +35,10 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -55,4 +59,8 @@ dependencies {
     implementation("androidx.room:room-runtime:$roomversion")
     ksp("androidx.room:room-compiler:$roomversion")
     implementation("androidx.room:room-ktx:$roomversion")
+
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.11")
 }

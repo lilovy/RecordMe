@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">RecordMe</string>
+    <string name="_00_00_0">00:00.0</string>
+    <string name="_save_record">Сохранить записись?</string>
+    <string name="_12">12</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="transcribed_text"></string>
+    <string name="transcribe">Расшифровать</string>
 </resources>
