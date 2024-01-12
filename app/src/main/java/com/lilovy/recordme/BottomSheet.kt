@@ -12,7 +12,11 @@ import com.lilovy.recordme.databinding.BottomSheetBinding
 import java.io.File
 
 
-class BottomSheet: BottomSheetDialogFragment {
+class BottomSheet(
+    private var dirPath: String,
+    private var filename: String,
+    private var listener: OnClickListener
+) : BottomSheetDialogFragment() {
 
     interface OnClickListener {
         fun onCancelClicked()
@@ -22,25 +26,12 @@ class BottomSheet: BottomSheetDialogFragment {
 
     private lateinit var binding: BottomSheetBinding
 
-    private var listener: OnClickListener
-
-    private var filename: String
-    private var dirPath: String
-
-    constructor(dirPath: String, filename : String, listener: OnClickListener){
-        this.dirPath = dirPath
-        this.filename = filename
-        this.listener = listener
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = BottomSheetBinding.inflate(layoutInflater)
-
-        inflater.inflate(R.layout.bottom_sheet, container)
         val editText = binding.filenameInput
 
         dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);

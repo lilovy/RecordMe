@@ -183,7 +183,7 @@ class MainActivity : AppCompatActivity(), BottomSheet.OnClickListener, Timer.OnT
         binding.deleteBtn.isClickable = false
         binding.deleteBtn.setImageResource(R.drawable.ic_delete_disabled)
 
-        binding.playerView.reset()
+//        binding.playerView.reset()
         try {
             timer.stop()
         }catch (_: Exception){}

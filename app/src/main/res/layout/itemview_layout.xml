@@ -23,12 +23,14 @@
             android:id="@+id/filename"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/colorAccent"
             android:textStyle="bold"
             android:textSize="18sp"/>
         <TextView
             android:id="@+id/file_meta"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/black"
             android:textSize="14sp"/>
     </LinearLayout>
     <com.google.android.material.checkbox.MaterialCheckBox

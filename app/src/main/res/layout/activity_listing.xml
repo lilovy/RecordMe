@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:elevation="0dp"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         android:fitsSystemWindows="true"
         android:outlineSpotShadowColor="@android:color/transparent"
         android:outlineAmbientShadowColor="@android:color/transparent"
@@ -23,6 +22,8 @@
             app:contentScrim="@color/colorBackground"
             app:statusBarScrim="@color/colorBackground"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:collapsedTitleTextColor="@color/black"
+            app:expandedTitleTextColor="@color/black"
             app:expandedTitleTextAppearance="@style/TextAppearance.App.CollapsingToolbar.Expanded"
             app:collapsedTitleTextAppearance="@style/TextAppearance.App.CollapsingToolbar.Collapsed">
 
@@ -30,27 +31,21 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
-                app:title="Recordings"
+                android:elevation="0dp"
                 app:layout_collapseMode="pin"
-                android:elevation="0dp">
+                app:title="Записи">
+
                 <RelativeLayout
                     android:id="@+id/editorBar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone">
+
                     <ImageButton
                         android:id="@+id/btnClose"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/ic_close"/>
-
-                    <ImageButton
-                        android:id="@+id/btnSelectAll"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:background="@drawable/ic_list"
-                        android:layout_marginEnd="16dp"/>
+                        android:background="@drawable/ic_close" />
                 </RelativeLayout>
 
             </com.google.android.material.appbar.MaterialToolbar>
@@ -77,25 +72,6 @@
         app:behavior_hideable="true"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         android:background="@color/colorBackground">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="90dp"
-            android:gravity="center"
-            android:orientation="vertical">
-            <ImageButton
-                android:id="@+id/btnRename"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="false"
-                android:background="@drawable/ic_edit_disabled"/>
-            <TextView
-                android:id="@+id/tvRename"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorDisabled"
-                android:text="Rename"/>
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"

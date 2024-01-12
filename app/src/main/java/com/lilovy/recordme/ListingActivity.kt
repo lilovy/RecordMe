@@ -84,11 +84,6 @@ class ListingActivity : AppCompatActivity(), Adapter.OnItemClickListener {
                     adapter.setData(audioRecords)
             }
         }
-
-        binding.btnRename.setOnClickListener {
-            Toast.makeText(this, "rename clicked", Toast.LENGTH_SHORT).show()
-        }
-
     }
 
 
@@ -113,28 +108,22 @@ class ListingActivity : AppCompatActivity(), Adapter.OnItemClickListener {
 
     private fun updateBottomSheet(){
         val tvDelete = binding.tvDelete
-        val tvRename = binding.tvRename
         val btnDelete = binding.btnDelete
 
         when(nbSelected){
             0 -> {
-                tvRename.setTextColor(resources.getColor(R.color.colorDisabled, theme))
                 btnDelete.isClickable = false
                 btnDelete.background = ResourcesCompat.getDrawable(resources, R.drawable.ic_delete_disabled2, theme)
                 tvDelete.setTextColor(resources.getColor(R.color.colorDisabled, theme))
 
             }
             1 -> {
-                tvRename.setTextColor(resources.getColor(R.color.colorText, theme))
-
                 btnDelete.isClickable = true
                 btnDelete.background = ResourcesCompat.getDrawable(resources, R.drawable.ic_delete, theme)
                 tvDelete.setTextColor(resources.getColor(R.color.colorText, theme))
 
             }
             else -> {
-                tvRename.setTextColor(resources.getColor(R.color.colorDisabled, theme))
-
                 tvDelete.setTextColor(resources.getColor(R.color.colorText, theme))
 
             }
@@ -172,10 +161,8 @@ class ListingActivity : AppCompatActivity(), Adapter.OnItemClickListener {
         nbSelected = if (audioRecord.isChecked) nbSelected+1 else nbSelected-1
         updateBottomSheet()
 
-        // hide back button
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
         supportActionBar?.setDisplayShowHomeEnabled(false)
-        // show relative layout
         binding.editorBar.visibility = View.VISIBLE
 
 
