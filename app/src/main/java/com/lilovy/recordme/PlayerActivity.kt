@@ -6,9 +6,15 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.widget.ProgressBar
 import android.widget.SeekBar
 import androidx.core.content.res.ResourcesCompat
+import com.lilovy.recordme.api.Transcribe
 import com.lilovy.recordme.databinding.ActivityPlayerBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class PlayerActivity : AppCompatActivity() {
 
@@ -16,6 +22,8 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var runnable : Runnable
     private lateinit var handler : Handler
     private lateinit var mediaPlayer : MediaPlayer
+
+    private lateinit var content: String
 
     private lateinit var binding: ActivityPlayerBinding
 
@@ -28,6 +36,8 @@ class PlayerActivity : AppCompatActivity() {
         val tvFilename = binding.tvFilename
         val seekBar = binding.seekBar
         val btnPlay = binding.btnPlay
+        val btnTranscribe = binding.btnTranscibe
+        val transcrb_txt = binding.transcrbTxt
 
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -36,8 +46,8 @@ class PlayerActivity : AppCompatActivity() {
             onBackPressed()
         }
 
-        var filePath = intent.getStringExtra("filepath")
-        var filename = intent.getStringExtra("filename")
+        val filePath = intent.getStringExtra("filepath")
+        val filename = intent.getStringExtra("filename")
 
         tvFilename.text = filename
 
@@ -59,6 +69,22 @@ class PlayerActivity : AppCompatActivity() {
             playPausePlayer()
         }
 
+        btnTranscribe.setOnClickListener {
+            binding.progressBar.visibility = ProgressBar.VISIBLE
+
+            GlobalScope.launch {
+                content = withContext(Dispatchers.IO) {
+                        Transcribe().getTranscribe(filePath).toString()
+                }
+                withContext(Dispatchers.Main) {
+                    binding.progressBar.visibility = ProgressBar.GONE
+                    transcrb_txt.text = content
+                }
+            }
+
+        }
+
+
         seekBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
                 if(p2) mediaPlayer.seekTo(p1)
@@ -71,7 +97,7 @@ class PlayerActivity : AppCompatActivity() {
 
     }
 
-    private fun playPausePlayer(){
+     private fun playPausePlayer(){
         val btnPlay = binding.btnPlay
         val seekBar = binding.seekBar
 
