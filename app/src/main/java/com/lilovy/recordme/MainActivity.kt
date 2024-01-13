@@ -81,6 +81,7 @@ class MainActivity : AppCompatActivity(), BottomSheet.OnClickListener, Timer.OnT
 
             File(dirPath+fileName).delete()
         }
+
         binding.deleteBtn.isClickable = false
     }
 
