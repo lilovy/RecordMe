@@ -1,6 +1,8 @@
 package com.lilovy.recordme
 
+import android.content.Intent
 import android.media.MediaPlayer
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -8,6 +10,7 @@ import android.os.Looper
 import android.util.Log
 import android.widget.ProgressBar
 import android.widget.SeekBar
+import androidx.core.content.FileProvider
 import androidx.core.content.res.ResourcesCompat
 import com.lilovy.recordme.api.Transcribe
 import com.lilovy.recordme.databinding.ActivityPlayerBinding
@@ -15,6 +18,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 
 class PlayerActivity : AppCompatActivity() {
 
@@ -36,7 +40,7 @@ class PlayerActivity : AppCompatActivity() {
         val tvFilename = binding.tvFilename
         val seekBar = binding.seekBar
         val btnPlay = binding.btnPlay
-        val btnTranscribe = binding.btnTranscibe
+//        val btnTranscribe = binding.btnTranscibe
         val transcrb_txt = binding.transcrbTxt
 
         setSupportActionBar(toolbar)
@@ -48,8 +52,10 @@ class PlayerActivity : AppCompatActivity() {
 
         val filePath = intent.getStringExtra("filepath")
         val filename = intent.getStringExtra("filename")
+        val transcript = intent.getStringExtra("transcript")
 
         tvFilename.text = filename
+        transcrb_txt.text = transcript
 
         mediaPlayer = MediaPlayer()
         mediaPlayer.apply {
@@ -69,20 +75,26 @@ class PlayerActivity : AppCompatActivity() {
             playPausePlayer()
         }
 
-        btnTranscribe.setOnClickListener {
-            binding.progressBar.visibility = ProgressBar.VISIBLE
-
-            GlobalScope.launch {
-                content = withContext(Dispatchers.IO) {
-                        Transcribe().getTranscribe(filePath).toString()
-                }
-                withContext(Dispatchers.Main) {
-                    binding.progressBar.visibility = ProgressBar.GONE
-                    transcrb_txt.text = content
-                }
+        binding.btnShare.setOnClickListener {
+            if (filePath != null) {
+                shareAudio(filePath)
             }
-
         }
+
+//        btnTranscribe.setOnClickListener {
+//            binding.progressBar.visibility = ProgressBar.VISIBLE
+//
+//            GlobalScope.launch {
+//                content = withContext(Dispatchers.IO) {
+//                        Transcribe().getTranscribe(filePath).toString()
+//                }
+//                withContext(Dispatchers.Main) {
+//                    binding.progressBar.visibility = ProgressBar.GONE
+//                    transcrb_txt.text = content
+//                }
+//            }
+//
+//        }
 
 
         seekBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
@@ -97,6 +109,19 @@ class PlayerActivity : AppCompatActivity() {
 
     }
 
+    private fun shareAudio(path: String) {
+        val file = File(path)
+
+//        val uri = Uri.fromFile(file)
+        val uri = FileProvider.getUriForFile(this, this.applicationContext.packageName + ".provider", file)
+        val intent = Intent(Intent.ACTION_SEND)
+
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        intent.setType("*/*")
+        intent.putExtra(Intent.EXTRA_STREAM, uri)
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+    }
      private fun playPausePlayer(){
         val btnPlay = binding.btnPlay
         val seekBar = binding.seekBar
